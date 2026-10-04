@@ -295,6 +295,7 @@ class RenderSmokeTests(unittest.TestCase):
             self.assertTrue((root / "issues" / "by-topic" / "ai.md").exists())
             site_data = json.loads(site_data_path.read_text(encoding="utf-8"))
             self.assertEqual([issue["title"] for issue in site_data["issues"]], ["Fix the fixture"])
+            self.assertEqual(site_data["language_slugs"], {"Python": "python"})
 
 
 class LanguageFeedTests(unittest.TestCase):
