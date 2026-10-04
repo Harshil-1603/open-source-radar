@@ -305,9 +305,9 @@ class LanguageFeedTests(unittest.TestCase):
 
             try:
                 repositories = {
-                    "owner/repo": {"language": "Python"},
-                    "owner/js-repo": {"language": "JavaScript"},
-                    "owner/erlang-repo": {"language": "Erlang"},
+                    "owner/repo": {"language": "Python", "stars": 12345},
+                    "owner/js-repo": {"language": "JavaScript", "stars": 900},
+                    "owner/erlang-repo": {"language": "Erlang", "stars": 500},
                 }
                 issues = [
                     {
@@ -316,6 +316,7 @@ class LanguageFeedTests(unittest.TestCase):
                         "title": "Issue <with> & special chars",
                         "url": "https://github.com/owner/repo/issues/1",
                         "created": "2026-09-20",
+                        "labels": ["good first issue", "docs & examples"],
                     },
                     {
                         "repo": "owner/js-repo",
@@ -366,6 +367,14 @@ class LanguageFeedTests(unittest.TestCase):
                 self.assertEqual(
                     root.findtext("./channel/lastBuildDate"),
                     "Sun, 04 Oct 2026 12:00:00 +0000",
+                )
+                self.assertEqual(
+                    items[0].findtext("description"),
+                    "owner/repo · 12.3k stars · good first issue, docs & examples",
+                )
+                self.assertEqual(
+                    [category.text for category in items[0].findall("category")],
+                    ["good first issue", "docs & examples"],
                 )
 
                 index = Path(tmp) / "site" / "feeds" / "index.html"
