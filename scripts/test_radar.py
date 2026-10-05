@@ -377,6 +377,11 @@ class LanguageFeedTests(unittest.TestCase):
                     ["good first issue", "docs & examples"],
                 )
 
+                # An issue without labels gets no trailing separator and no categories.
+                js_item = ET.parse(Path(tmp) / "site" / "feeds" / "javascript.xml").getroot().find("./channel/item")
+                self.assertEqual(js_item.findtext("description"), "owner/js-repo · 900 stars")
+                self.assertEqual(js_item.findall("category"), [])
+
                 index = Path(tmp) / "site" / "feeds" / "index.html"
                 self.assertTrue(index.exists())
 
